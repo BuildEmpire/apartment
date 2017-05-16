@@ -1,0 +1,14 @@
+{
+  "name": "buildempire/apartment",
+  "description": "Multi-tenancy for Laravel/Lumen using PostgreSQL schemas",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Cameron Smith",
+      "email": "contact@buildempire.co.uk"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {}
+}
