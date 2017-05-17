@@ -2,8 +2,9 @@
 
 namespace BuildEmpire\Apartment;
 
-use BuildEmpire\Apartment\Exceptions\NoSchemaSet;
-use BuildEmpire\Apartment\Exceptions\NoSchemaFound;
+use BuildEmpire\Apartment\Exceptions\NoSchemaSetException;
+use BuildEmpire\Apartment\Exceptions\NoSchemaFoundException;
+use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
 
 class Schema
 {
@@ -13,28 +14,27 @@ class Schema
      * Try set the schema name.
      *
      * @param $schemaName
-     * @throws NoSchemaFound
+     * @throws NoSchemaFoundException
      */
     public function trySetSchemaName($schemaName) {
-        $safeSchemaName = $this->getSchemaNameFromModel($schemaName);
-        if ($this->isSchemaEmptyValue($safeSchemaName)) {
-            throw new NoSchemaFound('No schema found.');
+        if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
+            throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
-        $this->schemaName = $safeSchemaName;
+        $this->schemaName = $schemaName;
     }
 
     /**
      * Try to get the schema name.
      *
      * @return bool
-     * @throws NoSchemaSet
+     * @throws NoSchemaSetException
      */
     public function tryGetSchemaName() {
         if ($this->schemaName !== false) {
             return $this->schemaName;
         }
 
-        throw new NoSchemaSet('No schema is set. If you want to check if a schema exists use doesSchemaExist method.');
+        throw new NoSchemaSetException('No schema is set. If you want to check if a schema exists use doesSchemaExist method.');
     }
 
     /**

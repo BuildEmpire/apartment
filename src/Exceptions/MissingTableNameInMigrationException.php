@@ -4,4 +4,4 @@ namespace BuildEmpire\Apartment\Exceptions;
 
 use \Exception;
 
-class SchemaAlreadyExists extends Exception {}
+class MissingTableNameInMigrationException extends Exception {}

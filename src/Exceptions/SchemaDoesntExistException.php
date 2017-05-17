@@ -4,4 +4,4 @@ namespace BuildEmpire\Apartment\Exceptions;
 
 use \Exception;
 
-class SchemaCannotBePublic extends Exception {}
+class SchemaDoesntExistException extends Exception {}

@@ -2,19 +2,20 @@
 
 namespace BuildEmpire\Apartment;
 
-use BuildEmpire\Apartment\Exceptions\SchemaAlreadyExists;
-use BuildEmpire\Apartment\Exceptions\SchemaCannotContainUppsercaseCharacters;
-use BuildEmpire\Apartment\Exceptions\SchemaCannotBePublic;
-use BuildEmpire\Apartment\Exceptions\SchemaDoesntExist;
+use BuildEmpire\Apartment\Exceptions\SchemaAlreadyExistsException;
+use BuildEmpire\Apartment\Exceptions\SchemaCannotBePublicException;
+use BuildEmpire\Apartment\Exceptions\SchemaDoesntExistException;
+use BuildEmpire\Apartment\Exceptions\SchemaNameNotValidException;
 use BuildEmpire\Apartment\Schema;
 use Illuminate\Support\Facades\Schema as LumenSchema;
 use Carbon\Carbon;
+use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
 
 class ArtisanApartmentCommands
 {
     const ARTISAN = 1;
     const WEB = 2;
-    const PUBLIC = 'public';
+    const PUBLIC_SCHEMA = 'public';
 
     protected $schema = false;
 
@@ -25,16 +26,16 @@ class ArtisanApartmentCommands
 
     public function tryMakeSchema($schemaName) {
 
-        if (ctype_upper($schemaName)) {
-            throw new SchemaCannotContainUppsercaseCharacters('The schema cannot contain any uppercase characters.');
+        if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
+            throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
 
         if ($this->schema->doesSchemaExist($schemaName)) {
-            throw new SchemaAlreadyExists('The schema ' . $schemaName . ' already exists in the apartments table.');
+            throw new SchemaAlreadyExistsException('The apartment ' . $schemaName . ' already exists.');
         }
 
         if ($this->isSchemaPublic($schemaName)) {
-            throw new SchemaCannotBePublic('The schema name cannot be ' . self::PUBLIC);
+            throw new SchemaCannotBePublicException('The apartment name cannot be ' . self::PUBLIC_SCHEMA);
         }
 
         app('db')->transaction(function() use ($schemaName) {
@@ -52,15 +53,16 @@ class ArtisanApartmentCommands
     }
 
     public function tryDropSchema($schemaName) {
-        $existingSchemaName = $this->getSchemaNameFromModel($schemaName);
+        if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
+            throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
+        }
 
-        if ($this->isSchemaEmptyValue($existingSchemaName)) {
-            throw new SchemaDoesntExist('The schema ' . $existingSchemaName . ' does not exists in the apartments table.');
+        if (!$this->schema->doesSchemaExist($schemaName)) {
+            throw new SchemaDoesntExistException('The apartment ' . $schemaName . ' does not exist.');
         }
 
         app('db')->transaction(function() use ($schemaName) {
-            app('db')->table('apartments')->where('schema_name', '=', $schemaName)->delete();
-            app('db')->statement('DROP SCHEMA ' . $schemaName . ' CASCADE');
+            $this->dropSchema($schemaName);
         });
     }
 
@@ -70,7 +72,16 @@ class ArtisanApartmentCommands
      * @param $schemaName
      */
     protected function createSchema($schemaName) {
-        app('db')->statement('CREATE SCHEMA ' . $schemaName);
+        app('db')->statement('CREATE SCHEMA ' . ApartmentHelpers::getSchemaSafeString($schemaName));
+    }
+
+    /**
+     * Drop the schema.
+     *
+     * @param $schemaName
+     */
+    protected function dropSchema($schemaName) {
+        app('db')->statement('DROP SCHEMA ' . ApartmentHelpers::getSchemaSafeString($schemaName) . ' CASCADE');
     }
 
     /**
@@ -79,7 +90,7 @@ class ArtisanApartmentCommands
      * @param $schemaName
      */
     protected function createSchemaMigrationTable($schemaName) {
-        LumenSchema::create($schemaName . '.migrations', function($table)
+        LumenSchema::create(ApartmentHelpers::getSchemaTableFormat($schemaName, 'migrations'), function($table)
         {
             $table->increments('id');
             $table->string('migration');
@@ -92,7 +103,7 @@ class ArtisanApartmentCommands
      * @param $schemaName
      */
     protected function createSchemaMetadata($schemaName) {
-        LumenSchema::create($schemaName . '.apartment_metadata', function($table)
+        LumenSchema::create(ApartmentHelpers::getSchemaTableFormat($schemaName, 'apartment_metadata'), function($table)
         {
             $table->string('name');
             $table->integer('created_by');
@@ -108,7 +119,7 @@ class ArtisanApartmentCommands
      * @param $createdAt
      */
     protected function updateSchemaMetadata($schemaName, $createdBy, $createdAt) {
-        app('db')->table($schemaName . '.apartment_metadata')->insert([
+        app('db')->table(ApartmentHelpers::getSchemaTableFormat($schemaName, 'apartment_metadata'))->insert([
             'name' => $schemaName,
             'created_by' => $createdBy,
             'created_at' => $createdAt,
@@ -122,7 +133,7 @@ class ArtisanApartmentCommands
      * @return bool
      */
     protected function isSchemaPublic($schemaName) {
-        if ($schemaName != self::PUBLIC) {
+        if ($schemaName != self::PUBLIC_SCHEMA) {
             return false;
         }
 

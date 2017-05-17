@@ -25,7 +25,7 @@ class Migrator
     }
 
     /**
-     * Resolve a migration instance from a file.
+     * Resolve a migration instance from a file. (copied from Laravel's Migration)
      *
      * @param  string  $file
      * @return object

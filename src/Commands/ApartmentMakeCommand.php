@@ -4,7 +4,8 @@ namespace BuildEmpire\Apartment\Commands;
 
 use BuildEmpire\Apartment\ArtisanApartmentCommands;
 use Illuminate\Console\Command;
-use BuildEmpire\Apartment\Exceptions\SchemaAlreadyExists;
+use BuildEmpire\Apartment\Exceptions\SchemaAlreadyExistsException;
+use Illuminate\Support\Composer;
 
 class ApartmentMakeCommand extends Command
 {
@@ -23,6 +24,16 @@ class ApartmentMakeCommand extends Command
     protected $description = 'Add an apartment.';
 
     /**
+     * ApartmentMakeCommand constructor.
+     * @param Composer $composer
+     */
+    public function __construct(Composer $composer)
+    {
+        parent::__construct();
+        $composer->dumpAutoloads();
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
@@ -33,7 +44,7 @@ class ApartmentMakeCommand extends Command
 
         try {
             $artisanApartmentCommands->tryMakeSchema($schemaName);
-        } catch (SchemaAlreadyExists $e) {
+        } catch (SchemaAlreadyExistsException $e) {
             $this->error($e->getMessage());
             return false;
         }

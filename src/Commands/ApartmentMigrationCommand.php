@@ -4,7 +4,7 @@ namespace BuildEmpire\Apartment\Commands;
 
 use BuildEmpire\Apartment\ArtisanApartmentCommands;
 use Illuminate\Console\Command;
-use BuildEmpire\Apartment\Exceptions\SchemaDoesntExist;
+use BuildEmpire\Apartment\Exceptions\SchemaDoesntExistException;
 use Carbon\Carbon;
 use Illuminate\Support\Composer;
 

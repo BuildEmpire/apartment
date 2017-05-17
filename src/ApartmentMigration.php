@@ -3,6 +3,8 @@
 namespace BuildEmpire\Apartment;
 
 use Illuminate\Database\Migrations\Migration;
+use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
+use BuildEmpire\Apartment\Exceptions\MissingTableNameInMigrationException;
 
 class ApartmentMigration extends Migration
 {
@@ -24,23 +26,37 @@ class ApartmentMigration extends Migration
     /**
      * Run/Up all apartment migrations.
      *
+     * This command could be run via artisan or the ApartmentMigration code.
+     *
+     * ApartmentMigration
+     * ==================
+     * Ran when creating a schema from within the code eg: making a new schema for a user. You only want the  migrations
+     * that have been added to the core migration to be applied.
+     *
+     * Artisan
+     * =======
+     * Ran from the command line and import/run all apartment migrations.
+     *
      * @param bool $ranViaArtisan
      */
     public function up($ranViaArtisan = true) {
-        foreach($this->schemas as $schema) {
 
-            $schemaTablePrefix = $schema->name . '.';
+        if ($ranViaArtisan) {
+            $this->throwExceptionIfNoTable();
+        }
+
+        foreach($this->schemas as $schema) {
 
             if (!$ranViaArtisan && !$this->hasPublicMigrationRan()) {
                  continue;
             }
 
-            if ($this->hasSchemaMigrationRan($schemaTablePrefix)) {
+            if ($this->hasSchemaMigrationRan($schema->name)) {
                 continue;
             }
 
-            $this->setSchemaTable($schemaTablePrefix);
-            $this->updateSchemaMigrateUp($schemaTablePrefix);
+            $this->setSchemaTable($schema->name);
+            $this->updateSchemaMigrateUp($schema->name);
             $this->apartmentUp();
 
         }
@@ -48,19 +64,37 @@ class ApartmentMigration extends Migration
 
     /**
      * Run/Reset all apartment migrations.
+     *
+     * This will only be run via the artisan command.
+     *
      */
     public function down() {
         foreach($this->schemas as $schema) {
 
-            $schemaTablePrefix = $schema->name . '.';
+            $this->throwExceptionIfNoTable();
 
-            if (!$this->hasSchemaMigrationRan($schemaTablePrefix)) {
+            if (!$this->hasSchemaMigrationRan($schema->name)) {
                 continue;
             }
 
-            $this->setSchemaTable($schemaTablePrefix);
-            $this->updateSchemaMigrateDown($schemaTablePrefix);
+            $this->setSchemaTable($schema->name);
+            $this->updateSchemaMigrateDown($schema->name);
             $this->apartmentDown();
+        }
+    }
+
+
+    /**
+     * Throw an exception if no table is specified and migration has been ran.
+     *
+     * We ONLY want to test this if the user is running the command via artisan. Otherwise, this migration might not have
+     * ever been ran and could stop new schemas being created.
+     *
+     * @throws MissingTableNameInMigrationException
+     */
+    protected function throwExceptionIfNoTable() {
+        if (empty($this->table)) {
+            throw new MissingTableNameInMigrationException('The migration '.$this->fileName.' has not specified a table.');
         }
     }
 
@@ -89,9 +123,10 @@ class ApartmentMigration extends Migration
      * @param string $schemaName
      * @return bool
      */
-    protected function hasMigrationRan($schemaName = 'public.') {
+    protected function hasMigrationRan($schemaName = 'public') {
+
         $migration = app('db')
-            ->table($schemaName . 'migrations')
+            ->table(ApartmentHelpers::getSchemaTableFormat($schemaName, 'migrations'))
             ->where('migration', '=', $this->fileName)
             ->count();
 
@@ -104,7 +139,7 @@ class ApartmentMigration extends Migration
      * @param $schemaName
      */
     private function setSchemaTable($schemaName) {
-        $this->table = $schemaName . $this->originalTable;
+        $this->table = ApartmentHelpers::getSchemaTableFormat($schemaName, $this->originalTable);
     }
 
     /**
@@ -112,7 +147,7 @@ class ApartmentMigration extends Migration
      */
     protected function updateSchemaMigrateUp($schemaName) {
         app('db')
-            ->table($schemaName . 'migrations')
+            ->table(ApartmentHelpers::getSchemaTableFormat($schemaName , 'migrations'))
             ->insert([
                 'migration' => $this->fileName
         ]);
@@ -123,7 +158,7 @@ class ApartmentMigration extends Migration
      */
     protected function updateSchemaMigrateDown($schemaName) {
         app('db')
-            ->table($schemaName . 'migrations')
+            ->table(ApartmentHelpers::getSchemaTableFormat($schemaName , 'migrations'))
             ->where('migration', '=', $this->fileName)
             ->delete();
     }

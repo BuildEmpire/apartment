@@ -4,7 +4,7 @@ namespace BuildEmpire\Apartment\Commands;
 
 use BuildEmpire\Apartment\Schema;
 use Illuminate\Console\Command;
-use BuildEmpire\Apartment\Exceptions\SchemaDoesntExist;
+use BuildEmpire\Apartment\Exceptions\SchemaDoesntExistException;
 use BuildEmpire\Apartment\Migrator;
 use Carbon\Carbon;
 

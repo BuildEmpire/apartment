@@ -4,4 +4,4 @@ namespace BuildEmpire\Apartment\Exceptions;
 
 use \Exception;
 
-class SchemaCannotContainUppsercaseCharacters extends Exception {}
+class NoSchemaSetException extends Exception {}

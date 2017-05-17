@@ -2,7 +2,7 @@
 
 namespace BuildEmpire\Apartment;
 
-use BuildEmpire\Apartment\Exceptions\NoSchemaSet;
+use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
 use Illuminate\Database\Eloquent\Model;
 
 class ApartmentModel extends Model
@@ -17,13 +17,10 @@ class ApartmentModel extends Model
         $args = func_get_args();
         call_user_func_array('parent::__construct', $args);
 
-        $apartment = app()->make('BuildEmpire\Apartment\Schema');
-        $schema = $apartment->getSchema();
+        $schema = app()->make('BuildEmpire\Apartment\Schema');
 
-        if (!$schema) {
-            throw new NoSchemaSet('No schema is set to prefix to the Eloquent model.');
-        }
-
-        $this->setTable($schema . '.' . $this->getTable());
+        $this->setTable(
+            ApartmentHelpers::getSchemaTableFormat($schema->tryGetSchemaName(), $this->getTable())
+        );
     }
 }

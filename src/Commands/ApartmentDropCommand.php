@@ -4,7 +4,7 @@ namespace BuildEmpire\Apartment\Commands;
 
 use BuildEmpire\Apartment\ArtisanApartmentCommands;
 use Illuminate\Console\Command;
-use BuildEmpire\Apartment\Exceptions\SchemaDoesntExist;
+use BuildEmpire\Apartment\Exceptions\SchemaDoesntExistException;
 
 class ApartmentDropCommand extends Command
 {
@@ -33,7 +33,7 @@ class ApartmentDropCommand extends Command
 
         try {
             $artisanApartmentCommands->tryDropSchema($schemaName);
-        } catch (SchemaDoesntExist $e) {
+        } catch (SchemaDoesntExistException $e) {
             $this->error($e->getMessage());
             return false;
         }

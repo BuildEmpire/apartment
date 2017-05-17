@@ -4,4 +4,4 @@ namespace BuildEmpire\Apartment\Exceptions;
 
 use \Exception;
 
-class NoSchemaSet extends Exception {}
+class SchemaNameNotValidException extends Exception {}
