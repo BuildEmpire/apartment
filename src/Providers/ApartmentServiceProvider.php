@@ -6,7 +6,6 @@ use BuildEmpire\Apartment\Commands\ApartmentMakeCommand;
 use BuildEmpire\Apartment\Commands\ApartmentDropCommand;
 use BuildEmpire\Apartment\Commands\ApartmentListCommand;
 use BuildEmpire\Apartment\Commands\ApartmentMigrationCommand;
-use BuildEmpire\Apartment\Commands\ApartmentForceCommand;
 use Illuminate\Support\ServiceProvider;
 use BuildEmpire\Apartment\Schema;
 
@@ -19,15 +18,12 @@ class ApartmentServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../Migrations');
-
         if ($this->app->runningInConsole()) {
             $this->commands([
                 ApartmentMakeCommand::class,
                 ApartmentDropCommand::class,
                 ApartmentListCommand::class,
                 ApartmentMigrationCommand::class,
-                ApartmentForceCommand::class,
             ]);
         }
 

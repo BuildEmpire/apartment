@@ -15,7 +15,8 @@ class ApartmentMigration extends Migration
      */
     public function __construct()
     {
-        $this->schemas = $this->getSchemas();
+        $schema = new Schema();
+        $this->schemas = $schema->getAllSchemas();
         $this->fileName = $this->getMigrationFileName();
         $this->originalTable = $this->table;
     }
@@ -140,13 +141,4 @@ class ApartmentMigration extends Migration
         return $fileInfo['filename'];
     }
 
-    /**
-     * Get all schemas excluding public from the database.
-     *
-     * @return mixed
-     */
-    protected function getSchemas() {
-        return app('db')
-            ->select("SELECT DISTINCT schemaname AS name FROM pg_tables WHERE schemaname NOT IN ('information_schema', 'pg_catalog') AND schemaname != 'public'");
-    }
 }

@@ -6,6 +6,7 @@ use BuildEmpire\Apartment\Schema;
 use Illuminate\Console\Command;
 use BuildEmpire\Apartment\Exceptions\SchemaDoesntExist;
 use BuildEmpire\Apartment\Migrator;
+use Carbon\Carbon;
 
 class ApartmentListCommand extends Command
 {
@@ -30,10 +31,27 @@ class ApartmentListCommand extends Command
      */
     public function handle(Schema $schema)
     {
-        $apartments = $schema->listAllSchemas();
+        $apartments = $schema->getAllSchemas();
+
+        $tableHeader = [
+            'Apartment',
+            'Created At'
+        ];
+
         foreach($apartments as $apartment) {
-            $this->line("<info>{$apartment->schema_name}</info> - created: {$apartment->created_at}");
+            $metadata = app('db')->table($apartment->name . '.apartment_metadata')
+                ->select()
+                ->first();
+
+            $createdAt = Carbon::createFromTimestamp($metadata->created_at);
+
+            $apartmentsTableResults[] = [
+                'apartment' => $apartment->name,
+                'created_at' => $createdAt
+            ];
         }
+
+        $this->table($tableHeader, $apartmentsTableResults);
 
         return true;
     }

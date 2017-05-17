@@ -2,7 +2,7 @@
 
 namespace BuildEmpire\Apartment\Commands;
 
-use BuildEmpire\Apartment\Schema;
+use BuildEmpire\Apartment\ArtisanApartmentCommands;
 use Illuminate\Console\Command;
 use BuildEmpire\Apartment\Exceptions\SchemaDoesntExist;
 use Carbon\Carbon;
@@ -42,7 +42,7 @@ class ApartmentMigrationCommand extends Command
      *
      * @return mixed
      */
-    public function handle(Schema $schema)
+    public function handle(ArtisanApartmentCommands $artisanApartmentCommands)
     {
         $migrationName = $this->argument('migrationName');
         $phpTag = '<?php';
@@ -58,6 +58,12 @@ class ApartmentMigrationCommand extends Command
         return true;
     }
 
+    /**
+     * Try to create migration file.
+     *
+     * @param $contents
+     * @param $migrationName
+     */
     protected function createMigrationFile($contents, $migrationName) {
         $currentDateTime = Carbon::now()->format('Y_m_d_His');
         $migrationFileName = $currentDateTime . '_' . $migrationName . '.php';

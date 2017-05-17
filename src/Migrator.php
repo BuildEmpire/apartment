@@ -9,7 +9,7 @@ class Migrator
     /**
      * Manually run the migrations for all apartments.
      *
-     * Note: If a migration hasn't been ran via artisan it will not be applied until is has!
+     * Note: If a migration has not been ran via artisan it will not be applied until is has!
      */
     public static function runMigrations() {
         $path = join(DIRECTORY_SEPARATOR, [base_path() , 'database', 'migrations']);

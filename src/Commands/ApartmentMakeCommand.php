@@ -2,7 +2,7 @@
 
 namespace BuildEmpire\Apartment\Commands;
 
-use BuildEmpire\Apartment\Schema;
+use BuildEmpire\Apartment\ArtisanApartmentCommands;
 use Illuminate\Console\Command;
 use BuildEmpire\Apartment\Exceptions\SchemaAlreadyExists;
 
@@ -27,12 +27,12 @@ class ApartmentMakeCommand extends Command
      *
      * @return mixed
      */
-    public function handle(Schema $schema)
+    public function handle(ArtisanApartmentCommands $artisanApartmentCommands)
     {
         $schemaName = $this->argument('schemaName');
 
         try {
-            $schema->tryMakeSchema($schemaName);
+            $artisanApartmentCommands->tryMakeSchema($schemaName);
         } catch (SchemaAlreadyExists $e) {
             $this->error($e->getMessage());
             return false;
