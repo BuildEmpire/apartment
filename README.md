@@ -38,8 +38,8 @@ $app->routeMiddleware([
 
 <p align="center">
 
-Command Line Usage using Artisan
---------------------------------
+Command Line Usage with Artisan
+-------------------------------
 
 All commands for apartment are available within artisan. 
 
@@ -65,7 +65,7 @@ Creating a new Apartment Migration section.
 Creating a new Apartment
 ------------------------
 
-To create your first apartment/schema simple enter:
+To create your first apartment/schema enter:
 ```
 php artisan apartment:make [name of schema/apartment]
 ```
@@ -74,7 +74,7 @@ php artisan apartment:make [name of schema/apartment]
 Listing Apartments
 ------------------
 
-Sometimes it's important to view what apartments have already been created and this can be achived by using the command:
+Sometimes it's important to view what apartments have already been created and this can be achived using the command:
 ```
 php artisan apartment:list
 
@@ -91,7 +91,7 @@ The only difference occurs when creating an apartment migration file using the c
 php artisan apartment:migration [name of migration]
 ```
 
-which will create a file within your migrations folder. In this example I created a migration called CreateProductsTable 
+which will create a file within your migrations folder. In this example we've created a migration called CreateProductsTable 
 which created the file: 2017_05_17_203315_CreateProductsTable.php
 
 ```
@@ -148,8 +148,8 @@ Schema::drop($this->table);
 ```
 
 
-You must specify the table name that you wish to update, create or any other operation you wish to do to the table and 
-make sure that any references that Schema makes to a table is using the $this->table property.
+You must specify the table name that you wish to update, create or any other operation you wish to do in the property table. 
+You also must make sure that any references that Schema makes to a table is using the $this->table property.
    
 In many cases this is simply a case of updating the $table property. In this example we've updated it to:
 
@@ -169,8 +169,8 @@ Migration, from a user's standpoint, runs exactly the same as a normal laravel a
 php artisan migrate
 ```
 
-This will apply all the standard Lumen migrations to the public schema ONLY and the apartment migrations to all the 
-apartment schemas available and NOT the public one.
+This will apply all the standard Lumen migrations to the public schema ONLY and all the apartment migrations to all the 
+schemas available and NOT to public.
 
 <b>Important:</b> The public database will not contain any of the apartment migrations. If you want the public schema to 
 contain similar migrations to your apartments simple create a standard migration matching your apartments migrations. 
@@ -229,7 +229,7 @@ class Product extends ApartmentModel
 ...
 ```
 
-When you access the model apartment will automatically set the model to use the schema set in Global Apartment. You 
+When you access the model, apartment will automatically set the model to use the schema set in Global Apartment. You 
 can also specify what apartment you want to use instead of using the global schema by doing:
 
 ```
@@ -254,8 +254,7 @@ $app->routeMiddleware([
 ```
 
 The middleware takes the first subdomain and checks if that apartment exists and then sets the current global apartment 
-schema to that value. Any calls to any apartment models, unless specified instantiation, will automatically use the 
-apartment set within the global apartment schema.
+schema to that value. Any calls to any apartment models, unless specified during the model's creation, will automatically use the apartment set within the global apartment schema.
 
 ```
 public function __construct(Schema $apartmentSchema)
@@ -283,7 +282,7 @@ public function handle($request, Closure $next)
 ```
 
 <b>Important:</b> You should write your own authentication method before apartment to make sure that the user has 
-permission to access it. This falls outside of the apartment's scope of work.
+permission to access it. This falls outside of apartment's scope of work.
 
 Creating a new apartment
 ------------------------
@@ -300,8 +299,7 @@ if ($schema->doesSchemaExist($apartmentName)) {
 }
 ```
 
-This will create the apartment and run all the migrations. For an application with a large set of migrations this might
-best be done within a background job.
+This will create the apartment/schema and run all the migrations. For an application with a large set of migrations this might best be done within a background job.
 
 Seeding Data to a new Apartment
 -------------------------------
