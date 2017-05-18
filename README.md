@@ -36,10 +36,8 @@ $app->routeMiddleware([
 ]);
 ```
 
-<p align="center">
-
 Command Line Usage with Artisan
--------------------------------
+===============================
 
 All commands for apartment are available within artisan. 
 
@@ -54,13 +52,11 @@ migrate:rollback     Rollback the last database migration
 migrate:status       Show the status of each migration
 ```
 
-<b>Important:</b> Your migrations can consist of two types of migration files. A standard Lumen migration or an 
+Important: Your migrations can consist of two types of migration files. A standard Lumen migration or an 
 Apartment migration. A standard Lumen migration file will ONLY be applied to the public schema whereas the Apartment
 migration files will ONLY be applied to any available schemas. To learn how to create an Apartment migration see the 
 Creating a new Apartment Migration section. 
 
-
-</p>
 
 Creating a new Apartment
 ------------------------
@@ -69,7 +65,7 @@ To create your first apartment/schema enter:
 ```
 php artisan apartment:make [name of schema/apartment]
 ```
-<b>Important:</b> Apartment names can only start with a letter and may only contain lowercase letters, numbers, or underscores.
+Important: Apartment names can only start with a letter and may only contain lowercase letters, numbers, or underscores.
 
 Listing Apartments
 ------------------
@@ -149,7 +145,7 @@ Schema::drop($this->table);
 
 
 You must specify the table name that you wish to update, create or any other operation you wish to do in the property table. 
-You also must make sure that any references that Schema makes to a table is using the $this->table property.
+You also must make sure that any references that Schema makes to a table is using the ```$this->table``` property.
    
 In many cases this is simply a case of updating the $table property. In this example we've updated it to:
 
@@ -172,7 +168,7 @@ php artisan migrate
 This will apply all the standard Lumen migrations to the public schema ONLY and all the apartment migrations to all the 
 schemas available and NOT to public.
 
-<b>Important:</b> The public database will not contain any of the apartment migrations. If you want the public schema to 
+Important: The public database will not contain any of the apartment migrations. If you want the public schema to 
 contain similar migrations to your apartments simple create a standard migration matching your apartments migrations. 
 
 Deleting an Apartment
@@ -185,12 +181,10 @@ php artisan apartment:drop [apartment name]
 
 This will only delete the schema and data for that apartment.
 
-<p align="center">
-
 Within your Lumen Application
------------------------------
+=============================
 
-</p>
+You can also use your apartments within your lumen application for creating apartments, using models and etc.
 
 Setting the Global Apartment per Request
 ----------------------------------------
@@ -281,7 +275,7 @@ public function handle($request, Closure $next)
 
 ```
 
-<b>Important:</b> You should write your own authentication method before apartment to make sure that the user has 
+Important: You should write your own authentication method before apartment to make sure that the user has 
 permission to access it. This falls outside of apartment's scope of work.
 
 Creating a new apartment
