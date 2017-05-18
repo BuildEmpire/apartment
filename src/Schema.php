@@ -16,7 +16,7 @@ class Schema
      * @param $schemaName
      * @throws NoSchemaFoundException
      */
-    public function trySetSchemaName($schemaName) {
+    public function setSchemaName($schemaName) {
         if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
             throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
@@ -29,7 +29,7 @@ class Schema
      * @return bool
      * @throws NoSchemaSetException
      */
-    public function tryGetSchemaName() {
+    public function getSchemaName() {
         if ($this->schemaName !== false) {
             return $this->schemaName;
         }

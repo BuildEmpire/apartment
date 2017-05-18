@@ -43,7 +43,7 @@ class ApartmentMakeCommand extends Command
         $schemaName = $this->argument('schemaName');
 
         try {
-            $artisanApartmentCommands->tryMakeSchema($schemaName);
+            $artisanApartmentCommands->makeSchema($schemaName);
         } catch (SchemaAlreadyExistsException $e) {
             $this->error($e->getMessage());
             return false;

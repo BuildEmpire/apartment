@@ -24,7 +24,7 @@ class ArtisanApartmentCommands
         $this->schema = $schema;
     }
 
-    public function tryMakeSchema($schemaName) {
+    public function makeSchema($schemaName) {
 
         if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
             throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
@@ -52,7 +52,7 @@ class ArtisanApartmentCommands
         });
     }
 
-    public function tryDropSchema($schemaName) {
+    public function dropSchema($schemaName) {
         if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
             throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
@@ -62,7 +62,7 @@ class ArtisanApartmentCommands
         }
 
         app('db')->transaction(function() use ($schemaName) {
-            $this->dropSchema($schemaName);
+            $this->deleteSchema($schemaName);
         });
     }
 
@@ -76,11 +76,11 @@ class ArtisanApartmentCommands
     }
 
     /**
-     * Drop the schema.
+     * Delete the schema.
      *
      * @param $schemaName
      */
-    protected function dropSchema($schemaName) {
+    protected function deleteSchema($schemaName) {
         app('db')->statement('DROP SCHEMA ' . ApartmentHelpers::getSchemaSafeString($schemaName) . ' CASCADE');
     }
 

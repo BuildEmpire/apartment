@@ -32,7 +32,7 @@ class ApartmentDropCommand extends Command
         $schemaName = $this->argument('schemaName');
 
         try {
-            $artisanApartmentCommands->tryDropSchema($schemaName);
+            $artisanApartmentCommands->dropSchema($schemaName);
         } catch (SchemaDoesntExistException $e) {
             $this->error($e->getMessage());
             return false;

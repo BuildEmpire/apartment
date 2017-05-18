@@ -51,6 +51,11 @@ class ApartmentListCommand extends Command
             ];
         }
 
+        if (count($apartments) == 0) {
+            $this->info('No apartments have been created');
+            return false;
+        }
+
         $this->table($tableHeader, $apartmentsTableResults);
 
         return true;

@@ -25,7 +25,7 @@ class ApartmentMiddleware
     {
         $subdomain = explode('.', $request->getHost())[0];
         if ($this->apartmentSchema->doesSchemaExist($subdomain)) {
-            $this->apartmentSchema->trySetSchemaName($subdomain);
+            $this->apartmentSchema->setSchemaName($subdomain);
         }
         return $next($request);
     }
