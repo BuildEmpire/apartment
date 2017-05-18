@@ -4,6 +4,7 @@ namespace BuildEmpire\Apartment;
 
 use BuildEmpire\Apartment\Exceptions\NoSchemaSetException;
 use BuildEmpire\Apartment\Exceptions\NoSchemaFoundException;
+use BuildEmpire\Apartment\Exceptions\SchemaNameNotValidException;
 use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
 
 class Schema
@@ -11,10 +12,10 @@ class Schema
     protected $schemaName = false;
 
     /**
-     * Try set the schema name.
+     * Set the schema name.
      *
      * @param $schemaName
-     * @throws NoSchemaFoundException
+     * @throws SchemaNameNotValidException
      */
     public function setSchemaName($schemaName)
     {
@@ -27,7 +28,7 @@ class Schema
     /**
      * Try to get the schema name.
      *
-     * @return bool
+     * @return string
      * @throws NoSchemaSetException
      */
     public function getSchemaName()
@@ -73,7 +74,7 @@ class Schema
     /**
      * Return a chain db object to allow you append additional parameters to object.
      *
-     * Note: Postgresql does not use standard tables to store schema data, but you can still access it via a select.
+     * Note: PostgreSQL does not use standard tables to store schema data, but you can still access it via a select.
      *
      * @return schema object
      */

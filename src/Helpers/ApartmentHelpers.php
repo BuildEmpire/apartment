@@ -10,7 +10,7 @@ class ApartmentHelpers
      * Does the schema only contain letters and/or numbers.
      *
      * @param $schemaName
-     * @return bool
+     * @return int
      */
     public static function isSchemaNameValid($schemaName)
     {
@@ -28,7 +28,7 @@ class ApartmentHelpers
     public static function getSchemaTableFormat($schemaName, $table = '')
     {
         if (!self::isSchemaNameValid($schemaName)) {
-            throw new SchemaNameNotValidException($schemaName . ' is not a valid schema name.');
+            throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
 
         return $schemaName . '.' . $table;

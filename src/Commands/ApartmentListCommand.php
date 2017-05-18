@@ -27,7 +27,8 @@ class ApartmentListCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @param Schema $schema
+     * @return bool
      */
     public function handle(Schema $schema)
     {

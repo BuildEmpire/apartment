@@ -19,11 +19,23 @@ class ArtisanApartmentCommands
 
     protected $schema = false;
 
+    /**
+     * ArtisanApartmentCommands constructor.
+     * @param \BuildEmpire\Apartment\Schema $schema
+     */
     public function __construct(Schema $schema)
     {
         $this->schema = $schema;
     }
 
+    /**
+     * Make an apartment's schema and run any existing apartment migrations.
+     *
+     * @param $schemaName
+     * @throws SchemaAlreadyExistsException
+     * @throws SchemaCannotBePublicException
+     * @throws SchemaNameNotValidException
+     */
     public function makeSchema($schemaName)
     {
 
@@ -53,6 +65,13 @@ class ArtisanApartmentCommands
         });
     }
 
+    /**
+     * Drop an existing schema and all it's data with cascade enabled.
+     *
+     * @param $schemaName
+     * @throws SchemaDoesntExistException
+     * @throws SchemaNameNotValidException
+     */
     public function dropSchema($schemaName)
     {
         if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
@@ -77,7 +96,7 @@ class ArtisanApartmentCommands
     protected function createSchema($schemaName)
     {
         if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
-            throw new SchemaNameNotValidException($schemaName . ' is not a valid schema name.');
+            throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
         app('db')->statement('CREATE SCHEMA ' . $schemaName);
     }
@@ -91,7 +110,7 @@ class ArtisanApartmentCommands
     protected function deleteSchema($schemaName)
     {
         if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
-            throw new SchemaNameNotValidException($schemaName . ' is not a valid schema name.');
+            throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
         app('db')->statement('DROP SCHEMA ' . $schemaName . ' CASCADE');
     }

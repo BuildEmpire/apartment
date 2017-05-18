@@ -9,6 +9,10 @@ class ApartmentMiddleware
 {
     protected $apartmentSchema;
 
+    /**
+     * ApartmentMiddleware constructor.
+     * @param Schema $apartmentSchema
+     */
     public function __construct(Schema $apartmentSchema)
     {
         $this->apartmentSchema = $apartmentSchema;
@@ -17,8 +21,8 @@ class ApartmentMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param $request
+     * @param Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)

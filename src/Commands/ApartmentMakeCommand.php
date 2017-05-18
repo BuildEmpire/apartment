@@ -36,7 +36,8 @@ class ApartmentMakeCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @param ArtisanApartmentCommands $artisanApartmentCommands
+     * @return bool
      */
     public function handle(ArtisanApartmentCommands $artisanApartmentCommands)
     {

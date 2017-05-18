@@ -67,7 +67,6 @@ class ApartmentMigration extends Migration
      * Run/Reset all apartment migrations.
      *
      * This will only be run via the artisan command.
-     *
      */
     public function down()
     {
@@ -120,12 +119,10 @@ class ApartmentMigration extends Migration
     protected function hasMigrationRan($schemaName = 'public')
     {
 
-        $migration = app('db')
+        return (boolean)app('db')
             ->table(ApartmentHelpers::getSchemaTableFormat($schemaName, 'migrations'))
             ->where('migration', '=', $this->fileName)
             ->count();
-
-        return (boolean)$migration;
     }
 
     /**
@@ -164,7 +161,7 @@ class ApartmentMigration extends Migration
     /**
      * Get migration filename of the child class. The class that has extended this class.
      *
-     * @return mixed
+     * @return string
      */
     protected function getMigrationFileName()
     {

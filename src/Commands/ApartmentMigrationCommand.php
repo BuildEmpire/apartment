@@ -40,7 +40,8 @@ class ApartmentMigrationCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @param ArtisanApartmentCommands $artisanApartmentCommands
+     * @return bool
      */
     public function handle(ArtisanApartmentCommands $artisanApartmentCommands)
     {
@@ -59,10 +60,11 @@ class ApartmentMigrationCommand extends Command
     }
 
     /**
-     * Try to create migration file.
+     * Create the migration file.
      *
      * @param $contents
      * @param $migrationName
+     * @throws UnableToCreateMigrationFileException
      */
     protected function createMigrationFile($contents, $migrationName)
     {

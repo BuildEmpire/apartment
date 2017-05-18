@@ -9,7 +9,7 @@ class Migrator
     /**
      * Manually run the migrations for all apartments.
      *
-     * Note: If a migration has not been ran via artisan it will not be applied until is has!
+     * Note: If a migration has not been ran via artisan it will not be applied until is has been!
      */
     public static function runMigrations()
     {
@@ -28,8 +28,8 @@ class Migrator
     /**
      * Resolve a migration instance from a file. (copied from Laravel's Migration)
      *
-     * @param  string $file
-     * @return object
+     * @param $fileName
+     * @return mixed
      */
     protected static function resolve($fileName)
     {
