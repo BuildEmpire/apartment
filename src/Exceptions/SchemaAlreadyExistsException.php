@@ -4,4 +4,6 @@ namespace BuildEmpire\Apartment\Exceptions;
 
 use \Exception;
 
-class SchemaAlreadyExistsException extends Exception {}
+class SchemaAlreadyExistsException extends Exception
+{
+}

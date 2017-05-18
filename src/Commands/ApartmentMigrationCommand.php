@@ -64,11 +64,12 @@ class ApartmentMigrationCommand extends Command
      * @param $contents
      * @param $migrationName
      */
-    protected function createMigrationFile($contents, $migrationName) {
+    protected function createMigrationFile($contents, $migrationName)
+    {
         $currentDateTime = Carbon::now()->format('Y_m_d_His');
         $migrationFileName = $currentDateTime . '_' . $migrationName . '.php';
 
-        $file = join(DIRECTORY_SEPARATOR, [base_path() , 'database', 'migrations', $migrationFileName]);
+        $file = join(DIRECTORY_SEPARATOR, [base_path(), 'database', 'migrations', $migrationFileName]);
 
         $migrationFile = fopen($file, "w");
         fwrite($migrationFile, $contents);

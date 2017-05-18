@@ -16,7 +16,8 @@ class Schema
      * @param $schemaName
      * @throws NoSchemaFoundException
      */
-    public function setSchemaName($schemaName) {
+    public function setSchemaName($schemaName)
+    {
         if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
             throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
@@ -29,7 +30,8 @@ class Schema
      * @return bool
      * @throws NoSchemaSetException
      */
-    public function getSchemaName() {
+    public function getSchemaName()
+    {
         if ($this->schemaName !== false) {
             return $this->schemaName;
         }
@@ -42,7 +44,8 @@ class Schema
      *
      * @return bool
      */
-    public function isSchemaSet() {
+    public function isSchemaSet()
+    {
         return (!$this->schemaName === false);
     }
 
@@ -52,8 +55,9 @@ class Schema
      * @param $schemaName
      * @return bool
      */
-    public function doesSchemaExist($schemaName) {
-        return (boolean) $this->getSchemaObjectSet()->where('schemaname', '=', $schemaName)->count();
+    public function doesSchemaExist($schemaName)
+    {
+        return (boolean)$this->getSchemaObjectSet()->where('schemaname', '=', $schemaName)->count();
     }
 
     /**
@@ -61,7 +65,8 @@ class Schema
      *
      * @return mixed
      */
-    public function getAllSchemas() {
+    public function getAllSchemas()
+    {
         return $this->getSchemaObjectSet()->get();
     }
 
@@ -72,7 +77,8 @@ class Schema
      *
      * @return schema object
      */
-    protected function getSchemaObjectSet() {
+    protected function getSchemaObjectSet()
+    {
         return app('db')
             ->table('pg_catalog.pg_tables')
             ->select('schemaname as name')

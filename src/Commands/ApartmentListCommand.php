@@ -38,7 +38,9 @@ class ApartmentListCommand extends Command
             'Created At'
         ];
 
-        foreach($apartments as $apartment) {
+        $apartmentsTableResults = [];
+
+        foreach ($apartments as $apartment) {
             $metadata = app('db')->table($apartment->name . '.apartment_metadata')
                 ->select()
                 ->first();

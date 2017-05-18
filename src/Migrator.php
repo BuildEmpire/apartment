@@ -11,8 +11,9 @@ class Migrator
      *
      * Note: If a migration has not been ran via artisan it will not be applied until is has!
      */
-    public static function runMigrations() {
-        $path = join(DIRECTORY_SEPARATOR, [base_path() , 'database', 'migrations']);
+    public static function runMigrations()
+    {
+        $path = join(DIRECTORY_SEPARATOR, [base_path(), 'database', 'migrations']);
 
         foreach (glob($path . '/*_*.php') as $filename) {
             $migration = static::resolve($filename);
@@ -27,7 +28,7 @@ class Migrator
     /**
      * Resolve a migration instance from a file. (copied from Laravel's Migration)
      *
-     * @param  string  $file
+     * @param  string $file
      * @return object
      */
     protected static function resolve($fileName)
@@ -41,7 +42,7 @@ class Migrator
     /**
      * Get the name of the migration.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return string
      */
     protected static function getMigrationName($path)
