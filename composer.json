@@ -1,6 +1,6 @@
 {
   "name": "buildempire/apartment",
-  "description": "Multi-tenancy for Laravel/Lumen using PostgreSQL schemas",
+  "description": "Multi-tenancy for Lumen using PostgreSQL schemas",
   "type": "library",
   "license": "MIT",
   "authors": [
