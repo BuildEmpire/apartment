@@ -4,7 +4,7 @@ namespace BuildEmpire\Apartment\Commands;
 
 use BuildEmpire\Apartment\ArtisanApartmentCommands;
 use Illuminate\Console\Command;
-use BuildEmpire\Apartment\Exceptions\SchemaDoesntExistException;
+use BuildEmpire\Apartment\Exceptions\UnableToCreateMigrationFileException;
 use Carbon\Carbon;
 use Illuminate\Support\Composer;
 
@@ -71,8 +71,12 @@ class ApartmentMigrationCommand extends Command
 
         $file = join(DIRECTORY_SEPARATOR, [base_path(), 'database', 'migrations', $migrationFileName]);
 
-        $migrationFile = fopen($file, "w");
-        fwrite($migrationFile, $contents);
-        fclose($migrationFile);
+        try {
+            $migrationFile = fopen($file, "w");
+            fwrite($migrationFile, $contents);
+            fclose($migrationFile);
+        } catch (\Exception $e) {
+            throw new UnableToCreateMigrationFileException('Unable to create migration file ' . $e->getMessage());
+        }
     }
 }
