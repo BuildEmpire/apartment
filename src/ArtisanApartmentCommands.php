@@ -24,7 +24,8 @@ class ArtisanApartmentCommands
         $this->schema = $schema;
     }
 
-    public function makeSchema($schemaName) {
+    public function makeSchema($schemaName)
+    {
 
         if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
             throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
@@ -38,7 +39,7 @@ class ArtisanApartmentCommands
             throw new SchemaCannotBePublicException('The apartment name cannot be ' . self::PUBLIC_SCHEMA);
         }
 
-        app('db')->transaction(function() use ($schemaName) {
+        app('db')->transaction(function () use ($schemaName) {
 
             $this->createSchema($schemaName);
 
@@ -52,7 +53,8 @@ class ArtisanApartmentCommands
         });
     }
 
-    public function dropSchema($schemaName) {
+    public function dropSchema($schemaName)
+    {
         if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
             throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
@@ -61,7 +63,7 @@ class ArtisanApartmentCommands
             throw new SchemaDoesntExistException('The apartment ' . $schemaName . ' does not exist.');
         }
 
-        app('db')->transaction(function() use ($schemaName) {
+        app('db')->transaction(function () use ($schemaName) {
             $this->deleteSchema($schemaName);
         });
     }
@@ -70,18 +72,28 @@ class ArtisanApartmentCommands
      * Create the schema.
      *
      * @param $schemaName
+     * @throws SchemaNameNotValidException
      */
-    protected function createSchema($schemaName) {
-        app('db')->statement('CREATE SCHEMA ' . ApartmentHelpers::getSchemaSafeString($schemaName));
+    protected function createSchema($schemaName)
+    {
+        if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
+            throw new SchemaNameNotValidException($schemaName . ' is not a valid schema name.');
+        }
+        app('db')->statement('CREATE SCHEMA ' . $schemaName);
     }
 
     /**
-     * Delete the schema.
+     * Drop the schema.
      *
      * @param $schemaName
+     * @throws SchemaNameNotValidException
      */
-    protected function deleteSchema($schemaName) {
-        app('db')->statement('DROP SCHEMA ' . ApartmentHelpers::getSchemaSafeString($schemaName) . ' CASCADE');
+    protected function deleteSchema($schemaName)
+    {
+        if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
+            throw new SchemaNameNotValidException($schemaName . ' is not a valid schema name.');
+        }
+        app('db')->statement('DROP SCHEMA ' . $schemaName . ' CASCADE');
     }
 
     /**
@@ -89,9 +101,9 @@ class ArtisanApartmentCommands
      *
      * @param $schemaName
      */
-    protected function createSchemaMigrationTable($schemaName) {
-        LumenSchema::create(ApartmentHelpers::getSchemaTableFormat($schemaName, 'migrations'), function($table)
-        {
+    protected function createSchemaMigrationTable($schemaName)
+    {
+        LumenSchema::create(ApartmentHelpers::getSchemaTableFormat($schemaName, 'migrations'), function ($table) {
             $table->increments('id');
             $table->string('migration');
         });
@@ -102,13 +114,14 @@ class ArtisanApartmentCommands
      *
      * @param $schemaName
      */
-    protected function createSchemaMetadata($schemaName) {
-        LumenSchema::create(ApartmentHelpers::getSchemaTableFormat($schemaName, 'apartment_metadata'), function($table)
-        {
-            $table->string('name');
-            $table->integer('created_by');
-            $table->integer('created_at');
-        });
+    protected function createSchemaMetadata($schemaName)
+    {
+        LumenSchema::create(ApartmentHelpers::getSchemaTableFormat($schemaName, 'apartment_metadata'),
+            function ($table) {
+                $table->string('name');
+                $table->integer('created_by');
+                $table->integer('created_at');
+            });
     }
 
     /**
@@ -118,7 +131,8 @@ class ArtisanApartmentCommands
      * @param $createdBy
      * @param $createdAt
      */
-    protected function updateSchemaMetadata($schemaName, $createdBy, $createdAt) {
+    protected function updateSchemaMetadata($schemaName, $createdBy, $createdAt)
+    {
         app('db')->table(ApartmentHelpers::getSchemaTableFormat($schemaName, 'apartment_metadata'))->insert([
             'name' => $schemaName,
             'created_by' => $createdBy,
@@ -132,7 +146,8 @@ class ArtisanApartmentCommands
      * @param $schemaName
      * @return bool
      */
-    protected function isSchemaPublic($schemaName) {
+    protected function isSchemaPublic($schemaName)
+    {
         if ($schemaName != self::PUBLIC_SCHEMA) {
             return false;
         }
