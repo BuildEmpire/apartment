@@ -4,8 +4,8 @@ BuildEmpire/Apartment
 Database multi-tenancy for lumen applications using PostgreSQL and Eloquent
 
 This package provides the ability to utilise PostgreSQL's schemas within your Lumen application. Apartment facilitates 
-the creation, update, and management of your multi multi tenants while using many of the artisan migration commands you 
-are already familiar using already.
+the creation, update, and management of your multi tenants while using many of the artisan migration commands you 
+are already familiar with.
     
 Installation
 ------------
