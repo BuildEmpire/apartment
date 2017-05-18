@@ -39,19 +39,20 @@ class ApartmentMigration extends Migration
      *
      * @param bool $ranViaArtisan
      */
-    public function up($ranViaArtisan = true) {
+    public function up($ranViaArtisan = true)
+    {
 
         if ($ranViaArtisan) {
             $this->throwExceptionIfNoTable();
         }
 
-        foreach($this->schemas as $schema) {
+        foreach ($this->schemas as $schema) {
 
             if (!$ranViaArtisan && !$this->hasPublicMigrationRan()) {
-                 continue;
+                continue;
             }
 
-            if ($this->hasSchemaMigrationRan($schema->name)) {
+            if ($this->hasMigrationRan($schema->name)) {
                 continue;
             }
 
@@ -68,12 +69,13 @@ class ApartmentMigration extends Migration
      * This will only be run via the artisan command.
      *
      */
-    public function down() {
-        foreach($this->schemas as $schema) {
+    public function down()
+    {
+        foreach ($this->schemas as $schema) {
 
             $this->throwExceptionIfNoTable();
 
-            if (!$this->hasSchemaMigrationRan($schema->name)) {
+            if (!$this->hasMigrationRan($schema->name)) {
                 continue;
             }
 
@@ -92,9 +94,10 @@ class ApartmentMigration extends Migration
      *
      * @throws MissingTableNameInMigrationException
      */
-    protected function throwExceptionIfNoTable() {
+    protected function throwExceptionIfNoTable()
+    {
         if (empty($this->table)) {
-            throw new MissingTableNameInMigrationException('The migration '.$this->fileName.' has not specified a table.');
+            throw new MissingTableNameInMigrationException('The migration ' . $this->fileName . ' has not specified a table.');
         }
     }
 
@@ -103,18 +106,9 @@ class ApartmentMigration extends Migration
      *
      * @return bool
      */
-    protected function hasPublicMigrationRan() {
+    protected function hasPublicMigrationRan()
+    {
         return $this->hasMigrationRan();
-    }
-
-    /**
-     * Does the $schemaName migration have this migration file.
-     *
-     * @param $schemaName
-     * @return bool
-     */
-    protected function hasSchemaMigrationRan($schemaName) {
-        return $this->hasMigrationRan($schemaName);
     }
 
     /**
@@ -123,14 +117,15 @@ class ApartmentMigration extends Migration
      * @param string $schemaName
      * @return bool
      */
-    protected function hasMigrationRan($schemaName = 'public') {
+    protected function hasMigrationRan($schemaName = 'public')
+    {
 
         $migration = app('db')
             ->table(ApartmentHelpers::getSchemaTableFormat($schemaName, 'migrations'))
             ->where('migration', '=', $this->fileName)
             ->count();
 
-        return (boolean) $migration;
+        return (boolean)$migration;
     }
 
     /**
@@ -138,27 +133,30 @@ class ApartmentMigration extends Migration
      *
      * @param $schemaName
      */
-    private function setSchemaTable($schemaName) {
+    private function setSchemaTable($schemaName)
+    {
         $this->table = ApartmentHelpers::getSchemaTableFormat($schemaName, $this->originalTable);
     }
 
     /**
      * Update schema's migration file. (add migration)
      */
-    protected function updateSchemaMigrateUp($schemaName) {
+    protected function updateSchemaMigrateUp($schemaName)
+    {
         app('db')
-            ->table(ApartmentHelpers::getSchemaTableFormat($schemaName , 'migrations'))
+            ->table(ApartmentHelpers::getSchemaTableFormat($schemaName, 'migrations'))
             ->insert([
                 'migration' => $this->fileName
-        ]);
+            ]);
     }
 
     /**
      * Update schema's migration file. (remove migration)
      */
-    protected function updateSchemaMigrateDown($schemaName) {
+    protected function updateSchemaMigrateDown($schemaName)
+    {
         app('db')
-            ->table(ApartmentHelpers::getSchemaTableFormat($schemaName , 'migrations'))
+            ->table(ApartmentHelpers::getSchemaTableFormat($schemaName, 'migrations'))
             ->where('migration', '=', $this->fileName)
             ->delete();
     }
@@ -168,7 +166,8 @@ class ApartmentMigration extends Migration
      *
      * @return mixed
      */
-    protected function getMigrationFileName() {
+    protected function getMigrationFileName()
+    {
         $childClassName = get_called_class();
         $reflection = new \ReflectionClass($childClassName);
         $fileInfo = pathinfo($reflection->getFileName());
