@@ -24,13 +24,20 @@ class ApartmentMakeCommand extends Command
     protected $description = 'Add an apartment.';
 
     /**
+     * Composer command.
+     *
+     * @var Composer
+     */
+    protected $composer;
+
+    /**
      * ApartmentMakeCommand constructor.
      * @param Composer $composer
      */
     public function __construct(Composer $composer)
     {
         parent::__construct();
-        $composer->dumpAutoloads();
+        $this->composer = $composer;
     }
 
     /**
@@ -51,6 +58,8 @@ class ApartmentMakeCommand extends Command
         }
 
         $this->line("<info>Created Apartment Schema:</info> {$schemaName}");
+
+        $this->composer->dumpAutoloads();
 
         return true;
     }

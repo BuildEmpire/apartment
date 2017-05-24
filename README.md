@@ -70,13 +70,13 @@ Important: Apartment names can only start with a letter and may only contain low
 Listing Apartments
 ------------------
 
-Sometimes it's important to view what apartments have already been created and this can be achived using the command:
+Sometimes it's important to view what apartments have already been created and this can be achieved using the command:
 ```
 php artisan apartment:list
 
 ```
 
-which will return a list of schemas.
+which will return a list of the existing apartments/schemas.
 
 Creating a new Apartment Migration
 ----------------------------------
@@ -145,7 +145,7 @@ Schema::drop($this->table);
 
 
 You must specify the table name that you wish to update, create or any other operation you wish to do in the property table. 
-You also must make sure that any references that Schema makes to a table is using the ```$this->table``` property.
+You also must make sure that any references that Schema makes to a table is using the `$this->table` property.
    
 In many cases this is simply a case of updating the $table property. In this example we've updated it to:
 
@@ -169,7 +169,7 @@ This will apply all the standard Lumen migrations to the public schema ONLY and 
 schemas available and NOT to public.
 
 Important: The public database will not contain any of the apartment migrations. If you want the public schema to 
-contain similar migrations to your apartments simple create a standard migration matching your apartments migrations. 
+contain similar migrations to your apartments simply create a standard migration matching your apartment's migrations. 
 
 Deleting an Apartment
 ---------------------
@@ -191,7 +191,7 @@ Setting the Global Apartment per Request
 Apartment registers the Schema class as a singleton within Lumen allowing it to keep a consistent object throughout the 
 application's request.
 
-To apply a global schema within your own application you could do somethig like this:
+To apply a global schema within your own application you could do something like this:
 
 ```
 /**
@@ -212,7 +212,7 @@ public function __construct(Schema $apartmentSchema)
 Using Eloquent Models to Access Apartments
 ------------------------------------------
 
-Make a model as normal but extend the model class to ApartmentModel eg:
+Make a model as normal but extend the model class to ApartmentModel e.g.
 
 ```
 <?php

@@ -68,7 +68,7 @@ class Schema
      */
     public function getAllSchemas()
     {
-        return $this->getSchemaObjectSet()->get();
+        return $this->getSchemaObjectSet()->orderBy('name')->get();
     }
 
     /**

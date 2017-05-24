@@ -1,6 +1,7 @@
 {
   "name": "buildempire/apartment",
-  "description": "Multi-tenancy for Lumen using PostgreSQL schemas",
+  "description": "Multi-tenancy for Lumen using PostgreSQL with Eloquent",
+  "keywords" : ["lumen", "postgres", "multitenancy"],
   "type": "library",
   "license": "MIT",
   "authors": [
@@ -10,5 +11,9 @@
     }
   ],
   "minimum-stability": "dev",
-  "require": {}
+  "require": {
+    "php": ">=5.6.4",
+    "laravel/lumen-framework": "5.4.*"
+  },
+  "version": "1.0.0"
 }

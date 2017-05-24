@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use BuildEmpire\Apartment\Exceptions\SchemaDoesntExistException;
 use BuildEmpire\Apartment\Migrator;
 use Carbon\Carbon;
+use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
 
 class ApartmentListCommand extends Command
 {
@@ -42,7 +43,7 @@ class ApartmentListCommand extends Command
         $apartmentsTableResults = [];
 
         foreach ($apartments as $apartment) {
-            $metadata = app('db')->table($apartment->name . '.apartment_metadata')
+            $metadata = app('db')->table(ApartmentHelpers::getSchemaTableFormat($apartment->name, 'apartment_metadata'))
                 ->select()
                 ->first();
 
