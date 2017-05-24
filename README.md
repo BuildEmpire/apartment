@@ -53,9 +53,15 @@ migrate:status       Show the status of each migration
 ```
 
 Important: Your migrations can consist of two types of migration files. A standard Lumen migration or an 
-Apartment migration. A standard Lumen migration file will ONLY be applied to the public schema whereas the Apartment
-migration files will ONLY be applied to any available schemas. To learn how to create an Apartment migration see the 
-Creating a new Apartment Migration section. 
+Apartment migration. 
+
+A standard Lumen migration file will ONLY be applied to the public schema. 
+
+An apartment migration will be applied to all apartments/schemas EXCEPT public. 
+
+To learn how to create an Apartment migration see the 
+
+[Creating a new Apartment Migration](#creating-a-new-apartment-migration) 
 
 
 Creating a new Apartment
@@ -66,6 +72,7 @@ To create your first apartment/schema enter:
 php artisan apartment:make [name of schema/apartment]
 ```
 Important: Apartment names can only start with a letter and may only contain lowercase letters, numbers, or underscores.
+You cannot create a schema named public, as this is the default schema used by PostgreSQL which Lumen uses by default.
 
 Listing Apartments
 ------------------
