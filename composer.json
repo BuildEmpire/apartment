@@ -1,0 +1,22 @@
+{
+  "name": "buildempire/apartment",
+  "description": "Multi-tenancy for Lumen using PostgreSQL with Eloquent",
+  "keywords" : ["lumen", "postgres", "multitenancy", "multi", "tenancy", "multi-tenancy"],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Cameron Smith",
+      "email": "cameron.smith@buildempire.co.uk"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.4",
+    "laravel/lumen-framework": "5.4.*"
+  },
+  "support": {
+    "email": "contact@buildempire.co.uk",
+    "source": "https://github.com/BuildEmpire/apartment"
+  },
+  "version": "0.0.1"
+}
