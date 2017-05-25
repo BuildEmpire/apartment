@@ -15,7 +15,6 @@ class ArtisanApartmentCommands
 {
     const ARTISAN = 1;
     const WEB = 2;
-    const PUBLIC_SCHEMA = 'public';
 
     protected $schema = false;
 
@@ -39,16 +38,12 @@ class ArtisanApartmentCommands
     public function makeSchema($schemaName)
     {
 
-        if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
-            throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
+        if (!ApartmentHelpers::isApartmentSchemaNameValid($schemaName)) {
+            throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, underscores and cannot contain protected schema names.');
         }
 
         if ($this->schema->doesSchemaExist($schemaName)) {
             throw new SchemaAlreadyExistsException('The apartment ' . $schemaName . ' already exists.');
-        }
-
-        if ($this->isSchemaPublic($schemaName)) {
-            throw new SchemaCannotBePublicException('The apartment name cannot be ' . self::PUBLIC_SCHEMA);
         }
 
         app('db')->transaction(function () use ($schemaName) {
@@ -74,11 +69,7 @@ class ArtisanApartmentCommands
      */
     public function dropSchema($schemaName)
     {
-        if ($this->isSchemaPublic($schemaName)) {
-            throw new SchemaCannotBePublicException('The apartment name cannot be ' . self::PUBLIC_SCHEMA);
-        }
-
-        if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
+        if (!ApartmentHelpers::isApartmentSchemaNameValid($schemaName)) {
             throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
 
@@ -161,20 +152,5 @@ class ArtisanApartmentCommands
             'created_by' => $createdBy,
             'created_at' => $createdAt,
         ]);
-    }
-
-    /**
-     * Check if the schemaName is public.
-     *
-     * @param $schemaName
-     * @return bool
-     */
-    protected function isSchemaPublic($schemaName)
-    {
-        if ($schemaName != self::PUBLIC_SCHEMA) {
-            return false;
-        }
-
-        return true;
     }
 }
