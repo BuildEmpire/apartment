@@ -219,7 +219,7 @@ public function __construct(Schema $apartmentSchema)
 Using Eloquent Models to Access Apartments
 ------------------------------------------
 
-Make a model as normal but extend the model class to ApartmentModel e.g.
+Make a model as normal, then modify it to extend `ApartmentModel`, e.g.
 
 ```
 <?php
@@ -285,8 +285,8 @@ public function handle($request, Closure $next)
 Important: You should write your own authentication method before apartment to make sure that the user has 
 permission to access it. This falls outside of apartment's scope of work.
 
-Creating a new apartment
-------------------------
+Creating a new apartment programmatically
+-----------------------------------------
 You can create a new apartment within your application:
 
 ```

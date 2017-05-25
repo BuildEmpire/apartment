@@ -107,7 +107,7 @@ class ApartmentMigration extends Migration
      */
     protected function hasPublicMigrationRan()
     {
-        return $this->hasMigrationRan();
+        return $this->hasMigrationRan('public');
     }
 
     /**
@@ -116,7 +116,7 @@ class ApartmentMigration extends Migration
      * @param string $schemaName
      * @return bool
      */
-    protected function hasMigrationRan($schemaName = 'public')
+    protected function hasMigrationRan($schemaName)
     {
 
         return (boolean)app('db')

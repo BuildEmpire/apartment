@@ -66,7 +66,7 @@ class ArtisanApartmentCommands
     }
 
     /**
-     * Drop an existing schema and all it's data with cascade enabled.
+     * Drop an existing schema and all its data with cascade enabled.
      *
      * @param $schemaName
      * @throws SchemaDoesntExistException
@@ -74,6 +74,10 @@ class ArtisanApartmentCommands
      */
     public function dropSchema($schemaName)
     {
+        if ($this->isSchemaPublic($schemaName)) {
+            throw new SchemaCannotBePublicException('The apartment name cannot be ' . self::PUBLIC_SCHEMA);
+        }
+
         if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
             throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
