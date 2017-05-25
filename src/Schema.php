@@ -26,18 +26,13 @@ class Schema
     }
 
     /**
-     * Try to get the schema name.
+     * Get the current schema. If no schema is set false will be returned.
      *
-     * @return string
-     * @throws NoSchemaSetException
+     * @return bool
      */
     public function getSchemaName()
     {
-        if ($this->schemaName !== false) {
-            return $this->schemaName;
-        }
-
-        throw new NoSchemaSetException('No schema is set. If you want to check if a schema exists use doesSchemaExist method.');
+        return $this->schemaName;
     }
 
     /**

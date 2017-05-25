@@ -4,10 +4,12 @@ namespace BuildEmpire\Apartment;
 
 use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
 use Illuminate\Database\Eloquent\Model;
+use BuildEmpire\Apartment\Exceptions\NoSchemaFoundException;
 
 class ApartmentModel extends Model
 {
     protected $apartment = false;
+    protected $apartmentSchema = false;
 
     /**
      * ApartmentModel constructor.
@@ -21,23 +23,33 @@ class ApartmentModel extends Model
      * 1. Extracts any apartment that has been set in the constructor and then passes the rest onto the Model class.
      * 2. If no apartment has been provided the model will automatically use the schema set through the singleton Schema
      *    class
+     *
+     * @param \BuildEmpire\Apartment\Schema $schema
+     * @throws NoSchemaFoundException
      */
     public function __construct()
     {
         $args = func_get_args();
+        $apartment = false;
+        $this->apartmentSchema = app()->make('BuildEmpire\Apartment\Schema');
 
         if (isset($args[0]['apartment'])) {
-            $this->apartment = $args[0]['apartment'];
+            $apartment = $args[0]['apartment'];
             unset($args[0]['apartment']);
         }
 
         call_user_func_array('parent::__construct', $args);
-        $schema = app()->make('BuildEmpire\Apartment\Schema');
-        $this->apartment = ($this->apartment !== false ? $this->apartment : $schema->getSchemaName());
+        $apartment = ($apartment !== false ? $apartment : $this->apartmentSchema->getSchemaName());
+
+        if (!$this->apartmentSchema->doesSchemaExist($apartment)) {
+            throw new NoSchemaFoundException('Schema ' . $apartment . ' cannot be found.');
+        }
 
         $this->setTable(
-            ApartmentHelpers::getSchemaTableFormat($this->apartment, $this->getTable())
+            ApartmentHelpers::getSchemaTableFormat($apartment, $this->getTable())
         );
+
+        $this->apartment = $apartment;
     }
 
     /**
@@ -47,6 +59,10 @@ class ApartmentModel extends Model
      */
     public function setApartment($schemaName)
     {
+        if (!$this->apartmentSchema->doesSchemaExist($schemaName)) {
+            throw new NoSchemaFoundException('Schema ' . $schemaName . ' cannot be found.');
+        }
+
         $this->apartment = $schemaName;
 
         $this->setTable(
