@@ -9,7 +9,7 @@ class Migrator
     /**
      * Manually run the migrations for all apartments.
      *
-     * Note: If a migration has not been ran via artisan it will not be applied until is has been!
+     * Note: It will not be applied until artisan migrate has been run!
      */
     public static function runMigrations()
     {

@@ -42,7 +42,7 @@ class Schema
      */
     public function isSchemaSet()
     {
-        return (!$this->schemaName === false);
+        return !($this->schemaName === false);
     }
 
     /**
