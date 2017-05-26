@@ -18,5 +18,10 @@
     "email": "contact@buildempire.co.uk",
     "source": "https://github.com/BuildEmpire/apartment"
   },
+  "autoload": {
+    "psr-4": {
+      "BuildEmpire\\Apartment\\": "src/"
+    }
+  },
   "version": "0.0.1"
 }
