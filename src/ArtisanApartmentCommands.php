@@ -6,15 +6,15 @@ use BuildEmpire\Apartment\Exceptions\SchemaAlreadyExistsException;
 use BuildEmpire\Apartment\Exceptions\SchemaCannotBePublicException;
 use BuildEmpire\Apartment\Exceptions\SchemaDoesntExistException;
 use BuildEmpire\Apartment\Exceptions\SchemaNameNotValidException;
-use BuildEmpire\Apartment\Schema;
-use Illuminate\Support\Facades\Schema as LumenSchema;
-use Carbon\Carbon;
 use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
+use BuildEmpire\Apartment\Schema;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema as LumenSchema;
 
 class ArtisanApartmentCommands
 {
     const ARTISAN = 1;
-    const WEB = 2;
+    const WEB     = 2;
 
     protected $schema = false;
 
@@ -93,7 +93,7 @@ class ArtisanApartmentCommands
         if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
             throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
-        app('db')->statement('CREATE SCHEMA ' . $schemaName);
+        app('db')->statement('CREATE SCHEMA "' . $schemaName . '"');
     }
 
     /**
@@ -107,7 +107,7 @@ class ArtisanApartmentCommands
         if (!ApartmentHelpers::isSchemaNameValid($schemaName)) {
             throw new SchemaNameNotValidException('The apartment ' . $schemaName . ' is not valid. It must be all lowercase and only contain letters, numbers, or underscores.');
         }
-        app('db')->statement('DROP SCHEMA ' . $schemaName . ' CASCADE');
+        app('db')->statement('DROP SCHEMA "' . $schemaName . '" CASCADE');
     }
 
     /**
@@ -148,7 +148,7 @@ class ArtisanApartmentCommands
     protected function updateSchemaMetadata($schemaName, $createdBy, $createdAt)
     {
         app('db')->table(ApartmentHelpers::getSchemaTableFormat($schemaName, 'apartment_metadata'))->insert([
-            'name' => $schemaName,
+            'name'       => $schemaName,
             'created_by' => $createdBy,
             'created_at' => $createdAt,
         ]);
