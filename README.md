@@ -1,9 +1,9 @@
 BuildEmpire/Apartment
 =========================
 
-Database multi-tenancy for lumen applications using PostgreSQL and Eloquent
+Database multi-tenancy for Laravel applications using PostgreSQL and Eloquent
 
-This package provides the ability to utilise PostgreSQL's schemas within your Lumen application. Apartment facilitates 
+This package provides the ability to utilise PostgreSQL's schemas within your Laravel application. Apartment facilitates 
 the creation, update, and management of your multi tenants while using many of the artisan migration commands you 
 are already familiar with.
     
@@ -16,24 +16,12 @@ composer require buildempire/apartment
 composer dump-autoload
 ```
 
-Then add the BuildEmpire/Apartment provider to your /bootstrap/app.php file.
+If you wish to use Apartment's middleware you can also add that to your /app/Http/Kernel.php file.
 ```
-$app->register(BuildEmpire\Apartment\Providers\ApartmentServiceProvider::class);
-```
-
-You must also enable Facades and Eloquent:
-
-```
-$app->withFacades();
-
-$app->withEloquent();
-```
-
-If you wish to use Apartment's middleware you can also add that to your /bootstrap/app.php file.
-```
-$app->routeMiddleware([
-    'apartment' => BuildEmpire\Apartment\Middleware\ApartmentMiddleware::class
-]);
+protected $routeMiddleware = [
+        'apartment'      => \BuildEmpire\Apartment\Middleware\ApartmentMiddleware::class,
+        ...
+    ];
 ```
 
 Command Line Usage with Artisan
@@ -41,7 +29,7 @@ Command Line Usage with Artisan
 
 All commands for apartment are available within artisan. 
 
-Apartment uses the same process to manage migrations as in Lumen, which is with the artisan migration commands:
+Apartment uses the same process to manage migrations as in Laravel, which is with the artisan migration commands:
 
 ```
 migrate
@@ -52,10 +40,10 @@ migrate:rollback     Rollback the last database migration
 migrate:status       Show the status of each migration
 ```
 
-Important: Your migrations can consist of two types of migration files. A standard Lumen migration or an 
+Important: Your migrations can consist of two types of migration files. A standard Laravel migration or an 
 Apartment migration. 
 
-A standard Lumen migration file will ONLY be applied to the public schema. 
+A standard Laravel migration file will ONLY be applied to the public schema. 
 
 An apartment migration will be applied to all apartments/schemas EXCEPT public. 
 
@@ -71,8 +59,8 @@ To create your first apartment/schema enter:
 ```
 php artisan apartment:make [name of schema/apartment]
 ```
-Important: Apartment names can only start with a letter and may only contain lowercase letters, numbers, or underscores.
-You cannot create a schema named public, as this is the default schema used by PostgreSQL which Lumen uses by default.
+Important: Apartment names can only start with a letter and may only contain lowercase letters, numbers, hyphen, or underscores.
+You cannot create a schema named public, as this is the default schema used by PostgreSQL which Laravel uses by default.
 
 Listing Apartments
 ------------------
@@ -87,7 +75,7 @@ which will return a list of the existing apartments/schemas.
 
 Creating a new Apartment Migration
 ----------------------------------
-Apartment tries to use the same process to manage migrations as in Lumen, which is with the artisan migration commands. 
+Apartment tries to use the same process to manage migrations as in Laravel, which is with the artisan migration commands. 
 The only difference occurs when creating an apartment migration file using the command:
  
 ```
@@ -172,7 +160,7 @@ Migration, from a user's standpoint, runs exactly the same as a normal laravel a
 php artisan migrate
 ```
 
-This will apply all the standard Lumen migrations to the public schema ONLY and all the apartment migrations to all the 
+This will apply all the standard Laravel migrations to the public schema ONLY and all the apartment migrations to all the 
 schemas available and NOT to public.
 
 Important: The public database will not contain any of the apartment migrations. If you want the public schema to 
@@ -188,14 +176,14 @@ php artisan apartment:drop [apartment name]
 
 This will only delete the schema and data for that apartment.
 
-Within your Lumen Application
+Within your Laravel Application
 =============================
 
-You can also use your apartments within your lumen application for creating apartments, using models and etc.
+You can also use your apartments within your Laravel application for creating apartments, using models and etc.
 
 Setting the Global Apartment per Request
 ----------------------------------------
-Apartment registers the Schema class as a singleton within Lumen allowing it to keep a consistent object throughout the 
+Apartment registers the Schema class as a singleton within Laravel allowing it to keep a consistent object throughout the 
 application's request.
 
 To apply a global schema within your own application you could do something like this:
@@ -204,7 +192,7 @@ To apply a global schema within your own application you could do something like
 /**
 * Import Schema singleton instance.
 * 
-* Lumen will handle this via the dependency injection
+* Laravel will handle this via the dependency injection
 */
 public function __construct(Schema $apartmentSchema)
 {   
@@ -246,12 +234,13 @@ $products->setApartment('nameofapartment');
 
 Middleware
 ----------
-Apartment provides a middleware feature out of the box by adding the following to your /bootstrap/app.php file:
+Apartment provides a middleware feature out of the box by adding the following to your /app/Http/Kernel.php file:
 
 ```
-$app->routeMiddleware([
-    'apartment' => BuildEmpire\Apartment\Middleware\ApartmentMiddleware::class
-]);
+protected $routeMiddleware = [
+        'apartment'      => \BuildEmpire\Apartment\Middleware\ApartmentMiddleware::class,
+        ...
+    ];
 ```
 
 The middleware takes the first subdomain and checks if that apartment exists and then sets the current global apartment 
