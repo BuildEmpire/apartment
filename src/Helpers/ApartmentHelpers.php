@@ -40,7 +40,7 @@ class ApartmentHelpers
      */
     public static function isSchemaNameValid($schemaName)
     {
-        return self::isAProtectedSchemaName($schemaName) == false && (preg_match('/^[a-z][a-z0-9_]*$/', $schemaName));
+        return self::isAProtectedSchemaName($schemaName) == false && (preg_match('/^[a-z][a-z0-9_-]*$/', $schemaName));
     }
 
     /**
