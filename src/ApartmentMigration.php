@@ -38,28 +38,44 @@ class ApartmentMigration extends Migration
      * Ran from the command line and import/run all apartment migrations.
      *
      * @param bool $ranViaArtisan
+     * @param string|null $schemaName - run for single schema
+     * @return void
      */
-    public function up($ranViaArtisan = true)
+    public function up($ranViaArtisan = true, string $schemaName = null): void
     {
-
         if ($ranViaArtisan) {
             $this->throwExceptionIfNoTable();
         }
 
-        foreach ($this->schemas as $schema) {
-
-            if (!$ranViaArtisan && !$this->hasPublicMigrationRan()) {
-                continue;
+        if ($schemaName) {
+            $this->singleSchemaUp($ranViaArtisan, $schemaName);
+        } else {
+            foreach ($this->schemas as $schema) {
+                $this->singleSchemaUp($ranViaArtisan, $schema->name);
             }
-
-            if ($this->hasMigrationRan($schema->name)) {
-                continue;
-            }
-
-            $this->setSchemaTable($schema->name);
-            $this->updateSchemaMigrateUp($schema->name);
-            $this->apartmentUp();
         }
+    }
+
+    /**
+     * Run migrations for a single schema
+     *
+     * @param boolean $ranViaArtisan
+     * @param string $schemaName
+     * @return void
+     */
+    private function singleSchemaUp(bool $ranViaArtisan, string $schemaName): void
+    {
+        if (!$ranViaArtisan && !$this->hasPublicMigrationRan()) {
+            return;
+        }
+
+        if ($this->hasMigrationRan($schemaName)) {
+            return;
+        }
+
+        $this->setSchemaTable($schemaName);
+        $this->updateSchemaMigrateUp($schemaName);
+        $this->apartmentUp();
     }
 
     /**
