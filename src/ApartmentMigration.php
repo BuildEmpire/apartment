@@ -49,10 +49,12 @@ class ApartmentMigration extends Migration
 
         if ($schemaName) {
             $this->singleSchemaUp($ranViaArtisan, $schemaName);
-        } else {
-            foreach ($this->schemas as $schema) {
-                $this->singleSchemaUp($ranViaArtisan, $schema->name);
-            }
+            return;
+        }
+
+        // Run for all schemas if not schema is passed
+        foreach ($this->schemas as $schema) {
+            $this->singleSchemaUp($ranViaArtisan, $schema->name);
         }
     }
 
