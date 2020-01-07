@@ -56,7 +56,7 @@ class ArtisanApartmentCommands
 
             $this->updateSchemaMetadata($schemaName, self::ARTISAN, Carbon::now()->getTimestamp());
 
-            Migrator::runMigrations();
+            Migrator::runMigrations($schemaName);
         });
     }
 

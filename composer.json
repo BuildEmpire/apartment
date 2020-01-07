@@ -1,7 +1,7 @@
 {
   "name": "buildempire/apartment",
-  "description": "Multi-tenancy for Lumen using PostgreSQL with Eloquent",
-  "keywords" : ["lumen", "postgres", "multitenancy", "multi", "tenancy", "multi-tenancy"],
+  "description": "Multi-tenancy for Laravel using PostgreSQL with Eloquent",
+  "keywords" : ["laravel", "postgres", "multitenancy", "multi", "tenancy", "multi-tenancy"],
   "type": "library",
   "license": "MIT",
   "authors": [
@@ -23,5 +23,5 @@
       "BuildEmpire\\Apartment\\": "src/"
     }
   },
-  "version": "0.0.5"
+  "version": "0.0.6"
 }
