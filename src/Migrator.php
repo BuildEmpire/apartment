@@ -10,8 +10,9 @@ class Migrator
      * Manually run the migrations for all apartments.
      *
      * Note: It will not be applied until artisan migrate has been run!
+     * @param string|null $schema  - Run for single schema instead of all available ones
      */
-    public static function runMigrations()
+    public static function runMigrations(string $schema = null)
     {
         $path = join(DIRECTORY_SEPARATOR, [base_path(), 'database', 'migrations']);
 
@@ -21,7 +22,7 @@ class Migrator
                 continue;
             }
 
-            $migration->up(false);
+            $migration->up(false, $schema);
         }
     }
 
