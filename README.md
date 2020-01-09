@@ -159,11 +159,6 @@ class MyDataMigration extends ApartmentMigration
 {
     protected $apartmentSchema;
 
-    public function __construct(ApartmentSchema $apartmentSchema)
-    {
-        $this->apartmentSchema = $apartmentSchema;
-    }
-
     /**
      * Run the migrations.
      *
@@ -171,6 +166,10 @@ class MyDataMigration extends ApartmentMigration
      */
     public function apartmentUp(string $schemaName)
     {
+        if(!$this->apartmentSchema) {
+            $this->apartmentSchema = app()->make('BuildEmpire\Apartment\Schema');
+        }
+
         $this->apartmentSchema->setSchemaName($schemaName);
 
         $models = SomeApartmentModel::all();
