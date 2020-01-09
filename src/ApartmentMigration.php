@@ -77,7 +77,7 @@ class ApartmentMigration extends Migration
 
         $this->setSchemaTable($schemaName);
         $this->updateSchemaMigrateUp($schemaName);
-        $this->apartmentUp();
+        $this->apartmentUp($schemaName);
     }
 
     /**
@@ -97,7 +97,7 @@ class ApartmentMigration extends Migration
 
             $this->setSchemaTable($schema->name);
             $this->updateSchemaMigrateDown($schema->name);
-            $this->apartmentDown();
+            $this->apartmentDown($schema->name);
         }
     }
 
